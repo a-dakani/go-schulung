@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/http-server.iml" filepath="$PROJECT_DIR$/.idea/http-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../http-server-gin/.idea/http-server-gin.iml" filepath="$PROJECT_DIR$/../http-server-gin/.idea/http-server-gin.iml" />
+    </modules>
+  </component>
+</project>
