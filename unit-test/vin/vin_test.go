@@ -11,13 +11,13 @@ func Test_parse_lengthCheck(t *testing.T) {
 }
 
 func Test_parse_region(t *testing.T) {
-	vin := "12345678901234567"
+	vin := "1HGCM82633A123456"
 	v, err := FromString(vin)
 	if err != nil {
 		t.Error("Expected no error")
 	}
-	if v.region != "123" {
-		t.Error("Expected region to be 123")
+	if v.region != "United States" {
+		t.Error("Expected region to be United States")
 	}
 }
 
@@ -30,21 +30,27 @@ func Test_table_parse(t *testing.T) {
 	}{
 		{
 			name:           "valid vin",
-			vin:            "12345678901234567",
+			vin:            "2HGFC2F58LH123456",
 			wantErr:        false,
-			expectedRegion: "123",
+			expectedRegion: "Canada",
+		},
+		{
+			name:           "invalid region ",
+			vin:            "IBAUN73538VF12345",
+			wantErr:        true,
+			expectedRegion: "Canada",
 		},
 		{
 			name:           "vin too long",
-			vin:            "123456789012345678",
+			vin:            "2HGFC2F58LH1234562",
 			wantErr:        true,
-			expectedRegion: "123",
+			expectedRegion: "Canada",
 		},
 		{
 			name:           "vin too short",
-			vin:            "1234567890123456",
+			vin:            "WBAUN73538VF1234",
 			wantErr:        true,
-			expectedRegion: "123",
+			expectedRegion: "Germany",
 		},
 		{
 			name:           "vin empty",
