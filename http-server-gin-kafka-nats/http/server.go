@@ -3,7 +3,7 @@ package http
 import (
 	"context"
 	"fmt"
-	"github.com/a-dakani/go-schulung/http-server-gin-envconfig/ginserver"
+	"github.com/a-dakani/go-schulung/http-server-gin-kafka/ginserver"
 	"github.com/gin-gonic/gin"
 
 	"log"
@@ -21,7 +21,7 @@ func handlePing(context *gin.Context) {
 	})
 }
 
-func handleAddAudi(repository ginserver.AutoRepository) gin.HandlerFunc {
+func handleAddAudi(as *ginserver.AutoService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var audi ginserver.Audi
 		err := c.BindJSON(&audi)
@@ -30,13 +30,13 @@ func handleAddAudi(repository ginserver.AutoRepository) gin.HandlerFunc {
 			c.AbortWithStatus(http.StatusBadRequest)
 			return
 		}
-		err = repository.AddAuto(c.Request.Context(), audi)
+		err = as.AddAuto(c.Request.Context(), audi)
 
 	}
 }
-func handleGetAllAutos(repository ginserver.AutoRepository) gin.HandlerFunc {
+func handleGetAllAutos(as *ginserver.AutoService) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		autos, err := repository.GetAllAutos(c.Request.Context())
+		autos, err := as.GetAllAutos(c.Request.Context())
 		if err != nil {
 			log.Println(err)
 			c.AbortWithStatus(http.StatusInternalServerError)
@@ -49,7 +49,7 @@ func handleGetAllAutos(repository ginserver.AutoRepository) gin.HandlerFunc {
 	}
 }
 
-func StartServer(binding string, repository ginserver.AutoRepository) error {
+func StartServer(binding string, as *ginserver.AutoService) error {
 	engine := gin.Default()
 
 	authorized := engine.Group("/api", gin.BasicAuth(gin.Accounts{
@@ -57,8 +57,8 @@ func StartServer(binding string, repository ginserver.AutoRepository) error {
 		"bar": "foo",
 	}), XtraceIdMiddleware)
 
-	authorized.GET("autos", handleGetAllAutos(repository))
-	authorized.PUT("autos/audi", handleAddAudi(repository))
+	authorized.GET("autos", handleGetAllAutos(as))
+	authorized.PUT("autos/audi", handleAddAudi(as))
 
 	engine.GET("/ping", handlePing)
 
