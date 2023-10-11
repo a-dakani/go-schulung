@@ -1,17 +1,19 @@
 package ginserver
 
+import "context"
+
 type (
 	Kennzeichen    string
 	AutoRepository interface {
-		AddAuto(auto Auto) error
-		GetAllAutos() ([]Auto, error)
+		AddAuto(ctx context.Context, auto Auto) error
+		GetAllAutos(ctx context.Context) ([]Auto, error)
 	}
 
 	Audi struct {
-		MotorGestartet     bool
-		GeschwindigkeitKmH int
-		Kennzeichen
-		*Getriebe
+		MotorGestartet     bool `json:"motor-gestartet"`
+		GeschwindigkeitKmH int  `json:"geschwindigkeit-kmh"`
+		Kennzeichen        `json:"kennzeichen"`
+		*Getriebe          `json:"getriebe,omitempty"`
 	}
 
 	Auto interface {

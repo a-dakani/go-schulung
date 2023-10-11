@@ -1,7 +1,7 @@
 package ginserver
 
 type (
-	Kennenzeichen  string
+	Kennzeichen    string
 	AutoRepository interface {
 		AddAuto(auto Auto) error
 		GetAllAutos() ([]Auto, error)
@@ -10,7 +10,7 @@ type (
 	Audi struct {
 		MotorGestartet     bool `json:"_"`
 		GeschwindigkeitKmH int  `json:"_"`
-		Kennenzeichen      `json:"kennzeichen"`
+		Kennzeichen        `json:"kennzeichen"`
 		*Getriebe          `json:"getriebe,omitempty"`
 	}
 
